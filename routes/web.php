@@ -70,6 +70,7 @@ require __DIR__.'/frontend.php';
 
 Route::group(['prefix' => 'auth'], function() {
     Route::get('login', [HomeController::class, 'authLogin'])->name('auth.login');
+    Route::get('admin-login', [HomeController::class, 'adminAuthLogin'])->name('admin.login');
     Route::get('register', [HomeController::class, 'authRegister'])->name('auth.register');
     Route::get('recover-password', [HomeController::class, 'authRecoverPassword'])->name('auth.recover-password');
     Route::get('confirm-email', [HomeController::class, 'authConfirmEmail'])->name('auth.confirm-email');

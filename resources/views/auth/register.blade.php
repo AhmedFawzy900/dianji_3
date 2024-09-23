@@ -89,7 +89,7 @@
                         </div>
                         <button type="submit" class="btn btn-primary btn-block mt-2" id="submit-btn">إنشاء حساب</button>
                         <div class="col-lg-12 mt-3">
-                           <p class="mb-0 text-center">لديك حساب بالفعل؟ <a href="{{route('auth.login')}}">تسجيل
+                           <p class="mb-0 text-center">لديك حساب بالفعل؟ <a href="{{route('login')}}">تسجيل
                                  الدخول</a></p>
                         </div>
                      </form>

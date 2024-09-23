@@ -34,16 +34,30 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         $user = \Auth::user();
-
-        if($request->login == 'user_login' && $user->user_type === 'user'){
+        if( $user->user_type === 'user'){
             return redirect(RouteServiceProvider::FRONTEND);
         } 
-        elseif($request->login == 'user_login' && $user->user_type !== 'user') {
+        elseif( $user->user_type === 'provider'){
+            return redirect(RouteServiceProvider::HOME);
+        }
+        else{
             Auth::logout();
             return redirect()->back()->withErrors(['message' => 'You are not allowed to log in from here.']);
         }
+    }
+    public function adminLogin(LoginRequest $request)
+    {
+        $request->authenticate();
+
+        $request->session()->regenerate();
+
+        $user = \Auth::user();
+        if($user->user_type === 'admin'){
+            return redirect(RouteServiceProvider::FRONTEND);
+        } 
         else{
-            return redirect(RouteServiceProvider::HOME);
+            Auth::logout();
+            return redirect()->back()->withErrors(['message' => 'You are not allowed to log in from here.']);
         }
     }
 

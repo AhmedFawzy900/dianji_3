@@ -779,6 +779,10 @@ class HomeController extends Controller
     {
         return view('auth.login');
     }
+    function adminAuthLogin()
+    {
+        return view('auth.admin-login');
+    }
     function authRegister()
     {
         return view('auth.register');
