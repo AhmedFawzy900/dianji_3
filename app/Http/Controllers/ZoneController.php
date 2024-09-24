@@ -10,70 +10,39 @@ class ZoneController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'zones' => 'required|array',
-            'zones.*' => 'required|string|max:255'
+            'name' => 'required|string|max:255',
+            'coordinates' => 'required|json',
+        ]);
+        Zone::create([
+            'name' => $request->input('name'),
+            'coordinates' => $request->input('coordinates'),
         ]);
 
-        $user = auth()->user(); // Assuming the user is authenticated
-        try {
-        $providerZone = Zone::updateOrCreate(
-            ['provider_id' => $user->id],
-            ['zones' => $request->zones]
-        );
-        return response()->json([
-            'message' => 'Zones assigned successfully',
-            'providerZone' => $providerZone
-        ], 201);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to assign zones'], 500);
-        }
+        return redirect()->back()->with('success', 'Zone created successfully!');
     }
 
     public function index()
     {
-        // $user = Auth::user();
-        // $zones = $user->zones;
-
-        // return response()->json(['zones' => $zones]);
-        return view('zones.index');
+        $zones = Zone::all();
+        return view('zones.index',compact('zones'));
     }
 
-    public function update(Request $request)
+    public function edit($id)
     {
-        $request->validate([
-            'zones' => 'required|array',
-            'zones.*' => 'required|string|max:255'
-        ]);
-
-        $user = auth()->user(); // Assuming the user is authenticated
-
-        $providerZone = Zone::where('provider_id', $user->id)->first();
-        try{
-            if ($providerZone) {
-                // Merge new zones with existing zones
-                $existingZones = $providerZone->zones;
-                $newZones = $request->zones;
-                $mergedZones = array_unique(array_merge($existingZones, $newZones));
-        
-                // Update the provider's zones
-                $providerZone->zones = $mergedZones;
-                $providerZone->save();
-            } else {
-                // If no existing zones, create a new record
-                $providerZone = Zone::create([
-                    'provider_id' => $user->id,
-                    'zones' => $request->zones
-                ]);
-            }
-        
-            return response()->json([
-                'message' => 'Zones updated successfully',
-                'providerZone' => $providerZone
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to update zones'], 500);
-        }
+        $zone = Zone::find($id);
+        return view('zones.edit',compact('zone'));
     }
+
+    public function update(Request $request, $id)
+    {
+        $zone = Zone::find($id); // Get the zone by ID
+        $zone->coordinates = $request->coordinates;
+        $zone->name = $request->name;
+        $zone->save();
+        $zones = Zone::all();
+        return redirect()->route('zone.index')->with('success', 'Zone updated successfully!');
+    }
+    
 
     // delete one zone form array of zones not all
     public function deleteZoneItem(Request $request)
@@ -121,15 +90,16 @@ class ZoneController extends Controller
 
     public function destroy($id)
     {
-        $zone = Zone::where('id', $id)->where('provider_id', Auth::id())->first();
+        $zone = Zone::where('id', $id);
 
         if (!$zone) {
             return response()->json(['message' => 'Zone not found or you are not authorized to delete it'], 404);
         }
 
         $zone->delete();
+        $zones = Zone::all();
 
-        return response()->json(['message' => 'Zone deleted successfully']);
+        return view('zones.index',compact('zones'))->with('success', 'Zone deleted successfully!');
     }
 
 }

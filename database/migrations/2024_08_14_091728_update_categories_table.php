@@ -17,7 +17,7 @@ class UpdateCategoriesTable extends Migration
             $table->string('image')->nullable();
             $table->string('cover_image')->nullable()->after('image'); // Add cover_image field
             $table->decimal('commission', 5, 2)->nullable()->after('cover_image'); // Ensure commission is nullable
-            $table->string('zones')->nullable()->after('description'); // Ensure zones is nullable
+            $table->json('zones')->nullable()->after('description'); // Ensure zones is nullable
         });
     }
 

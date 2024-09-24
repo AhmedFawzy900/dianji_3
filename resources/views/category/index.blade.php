@@ -20,79 +20,79 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="row justify-content-center align-items-start">
-    <div class="card col-md-8">
-      <div class="card-body">
-        <div class="row justify-content-between ">
-
-          <div class="d-flex justify-content-start" style="direction: rtl">
-            <div class="input-group ml-2">
-              <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>
-              <input type="text" class="form-control dt-search pr-1" placeholder="بحث..." aria-label="Search"
-                aria-describedby="addon-wrapping" aria-controls="dataTableBuilder" style="width:120px">
-            </div>
-            <div class="datatable-filter  ml-2 " style="width: 150px;">
-              <select name="column_status" id="column_status" class="select2 form-control" data-filter="select"
-                style="width: 100px">
-                <option value="">{{ __('الكل') }}</option>
-                <option value="0" {{$filter['status'] == '0' ? "selected" : ''}}>{{ __('غير نشط') }}</option>
-                <option value="1" {{$filter['status'] == '1' ? "selected" : ''}}>{{ __('نشط') }}</option>
-              </select>
-            </div>
-            <div>
-              <div class="col-md-12">
-                <form action="{{ route('category.bulk-action') }}" id="quick-action-form"
-                  class="form-disabled d-flex gap-3 align-items-center">
-                  @csrf
-                  <select name="action_type" class="form-control select2" id="quick-action-type" style="width:150px"
-                    disabled>
-                    <option value="">{{ __('messages.no_action') }}</option>
-                    <option value="change-status">{{ __('messages.status') }}</option>
-                    <option value="change-featured">{{ __('messages.featured') }}</option>
-                    <option value="delete">{{ __('messages.delete') }}</option>
-                    <option value="restore">{{ __('messages.restore') }}</option>
-                    <option value="permanently-delete">{{ __('messages.permanent_dlt') }}</option>
-                  </select>
-
-                  <div class="select-status d-none quick-action-field" id="change-status-action" style="width:120px">
-                    <select name="status" class="form-control select2" id="status">
-                      <option value="1">{{ __('messages.active') }}</option>
-                      <option value="0">{{ __('messages.inactive') }}</option>
-                    </select>
-                  </div>
-                  <div class="select-status d-none quick-action-featured" id="change-featured-action" style="width:100%">
-                    <select name="is_featured" class="form-control select2" id="is_featured">
-                      <option value="1">{{ __('messages.yes') }}</option>
-                      <option value="0">{{ __('messages.no') }}</option>
-                    </select>
-                  </div>
-                  <button id="quick-action-apply" class="btn btn-primary" data-ajax="true"
-                    data--submit="{{ route('category.bulk-action') }}" data-datatable="reload" data-confirmation='true'
-                    data-title="{{ __('category', ['form' => __('category')]) }}"
-                    title="{{ __('category', ['form' => __('category')]) }}"
-                    data-message='{{ __("Do you want to perform this action?") }}'
-                    disabled>{{ __('messages.apply') }}</button>
+    <div class="row justify-content-center align-items-start">
+      <div class="card col-md-8">
+        <div class="card-body">
+          <div class="row justify-content-between ">
+  
+            <div class="d-flex justify-content-start" style="direction: rtl">
+              <div class="input-group ml-2">
+                <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>
+                <input type="text" class="form-control dt-search pr-1" placeholder="بحث..." aria-label="Search"
+                  aria-describedby="addon-wrapping" aria-controls="dataTableBuilder" style="width:120px">
               </div>
-
-              </form>
+              <div class="datatable-filter  ml-2 " style="width: 150px;">
+                <select name="column_status" id="column_status" class="select2 form-control" data-filter="select"
+                  style="width: 100px">
+                  <option value="">{{ __('الكل') }}</option>
+                  <option value="0" {{$filter['status'] == '0' ? "selected" : ''}}>{{ __('غير نشط') }}</option>
+                  <option value="1" {{$filter['status'] == '1' ? "selected" : ''}}>{{ __('نشط') }}</option>
+                </select>
+              </div>
+              <div>
+                <div class="col-md-12">
+                  <form action="{{ route('category.bulk-action') }}" id="quick-action-form"
+                    class="form-disabled d-flex gap-3 align-items-center">
+                    @csrf
+                    <select name="action_type" class="form-control select2" id="quick-action-type" style="width:150px"
+                      disabled>
+                      <option value="">{{ __('messages.no_action') }}</option>
+                      <option value="change-status">{{ __('messages.status') }}</option>
+                      <option value="change-featured">{{ __('messages.featured') }}</option>
+                      <option value="delete">{{ __('messages.delete') }}</option>
+                      <option value="restore">{{ __('messages.restore') }}</option>
+                      <option value="permanently-delete">{{ __('messages.permanent_dlt') }}</option>
+                    </select>
+  
+                    <div class="select-status d-none quick-action-field" id="change-status-action" style="width:120px">
+                      <select name="status" class="form-control select2" id="status">
+                        <option value="1">{{ __('messages.active') }}</option>
+                        <option value="0">{{ __('messages.inactive') }}</option>
+                      </select>
+                    </div>
+                    <div class="select-status d-none quick-action-featured" id="change-featured-action" style="width:100%">
+                      <select name="is_featured" class="form-control select2" id="is_featured">
+                        <option value="1">{{ __('messages.yes') }}</option>
+                        <option value="0">{{ __('messages.no') }}</option>
+                      </select>
+                    </div>
+                    <button id="quick-action-apply" class="btn btn-primary" data-ajax="true"
+                      data--submit="{{ route('category.bulk-action') }}" data-datatable="reload" data-confirmation='true'
+                      data-title="{{ __('category', ['form' => __('category')]) }}"
+                      title="{{ __('category', ['form' => __('category')]) }}"
+                      data-message='{{ __("Do you want to perform this action?") }}'
+                      disabled>{{ __('messages.apply') }}</button>
+                </div>
+  
+                </form>
+              </div>
             </div>
-          </div>
-
-
-          <div class="table-responsive">
-            <table id="datatable" class="table table-striped border">
-
-            </table>
+  
+  
+            <div class="table-responsive">
+              <table id="datatable" class="table table-striped border">
+  
+              </table>
+            </div>
           </div>
         </div>
       </div>
+  
+      <div class="col-md-4">
+        @include('components.category-tree', ['categories' => $categories])
+      </div>
+  
     </div>
-
-    <div class="col-md-4">
-      @include('components.category-tree', ['categories' => $categories])
-    </div>
-
   </div>
   <script>
     document.addEventListener('DOMContentLoaded', (event) => {

@@ -20,6 +20,7 @@ use Yajra\DataTables\DataTables;
 use League\CommonMark\Node\Block\Document as BlockDocument;
 use App\Models\NotificationTemplate;
 use App\Models\SubCategoryLevel3;
+use App\Models\Zone;
 
 class CategoryController extends Controller
 {
@@ -151,9 +152,9 @@ class CategoryController extends Controller
     {
         $id = $request->id;
         $auth_user = authSession();
-
+        $selectedZones = [];
         $categorydata = Category::find($id);
-
+        if(!empty($categorydata->zones)){ $selectedZones = json_decode($categorydata->zones , true); }
         $pageTitle = trans('messages.update_form_title',['form'=>trans('messages.category')]);
         
         if($categorydata == null){
@@ -161,8 +162,8 @@ class CategoryController extends Controller
             $categorydata = new Category;
         }
         $categories = Category::with('subcategories.subcategorieslevel3')->get();
-        
-        return view('category.create', compact('pageTitle' ,'categorydata' ,'auth_user','categories' ));
+        $zones_list = Zone::all()->pluck('name','id');
+        return view('category.create', compact('pageTitle' ,'categorydata' ,'auth_user','categories','zones_list' , "selectedZones" ));
     }
 
     /**
@@ -173,11 +174,12 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
+        // dd($request->all());
         if(demoUserPermission()){
             return  redirect()->back()->withErrors(trans('messages.demo_permission_denied'));
         }
         $data = $request->all();
-       
+        
         $data['is_featured'] = 0;
         if($request->has('is_featured')){
 			$data['is_featured'] = 1;
@@ -203,11 +205,17 @@ class CategoryController extends Controller
             $request->cover_image->storeAs('categories', $coverImageName);
             $data['cover_image'] = $coverImageName;
         }
+        $data['zones'] = json_encode($request->zones);
 
         // dd($data);
         $result = Category::updateOrCreate(['id' => $data['id'] ],$data);
+        if($request->hasFile('image')){
+            storeMediaFile($result,$request->image, 'image');
+        }
+        if($request->hasFile('cover_image')){
+            storeMediaFile($result,$request->cover_image, 'cover_image');
+        }
 
-        storeMediaFile($result,$request->category_image, 'category_image');
 
         $message = trans('messages.update_form',['form' => trans('messages.category')]);
         if($result->wasRecentlyCreated){

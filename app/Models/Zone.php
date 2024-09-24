@@ -9,16 +9,15 @@ class Zone extends Model
 {
     use HasFactory;
 
-    protected $table = 'provider_zones';
+    protected $table = 'zones';
 
-    protected $fillable = ['provider_id', 'zones'];
-
+    protected $fillable = ['name', 'coordinates'];
     protected $casts = [
-        'zones' => 'array',
+        'coordinates' => 'array',
     ];
 
-    public function provider()
-    {
-        return $this->belongsTo(User::class, 'provider_id');
-    }
+//     public function provider()
+//     {
+//         return $this->belongsTo(User::class, 'provider_id');
+//     }
 }

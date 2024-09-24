@@ -26,7 +26,7 @@ class CategoryRequest extends FormRequest
         $id = request()->id;
         return [
             'name'              => 'required|unique:categories,name,'.$id,
-            'image'             => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image'             => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
             'zones'             => 'required',
             'commission' => 'nullable|numeric|min:0|max:100',
             'status'            => 'required',

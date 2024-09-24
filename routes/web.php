@@ -492,6 +492,12 @@ Route::group(['middleware' => ['auth', 'verified']], function()
     Route::get('save-wallet-stripe-payment/{id}',[App\Http\Controllers\WalletController::class, 'saveWalletStripePayment']);
 
     Route::get('/zone-index',[ZoneController::class, 'index'])->name('zone.index');
+    Route::post('/zones', [ZoneController::class, 'store'])->name('zones.store');
+    Route::post('/zone/{id}', [ZoneController::class, 'destroy'])->name('zone.destroy');
+    Route::get('/zone/edit/{id}', [ZoneController::class, 'edit'])->name('zone.edit');
+    Route::post('/zone/update/{id}', [ZoneController::class, 'update'])->name('zone.update');
+
+
 });
 Route::get('/ajax-list',[HomeController::class, 'getAjaxList'])->name('ajax-list');
 Route::post('/service-list',[HomeController::class, 'getAjaxServiceList'])->name('service-list');

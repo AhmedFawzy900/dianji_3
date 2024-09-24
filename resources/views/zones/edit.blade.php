@@ -19,22 +19,22 @@
                     </div>
                 </div>
             </div>
-            <div class=" col-lg-12">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('zones.store') }}" method="POST">
+                        <form method="POST" action="{{ route('zone.update', $zone->id) }}">
                             @csrf
+
                             <!-- Input field for zone name -->
                             <div class="form-group">
                                 <label for="name">اسم المنطقة</label>
-                                <input class="form-control" type="text" id="name" name="name" required>
+                                <input class="form-control" type="text" value="{{ $zone->name }}" id="name" name="name" required>
                             </div>
                             <!-- Non-editable input field to display selected points -->
                             <div class="form-group">
                                 <label for="coordinates">نقاط المنطقة </label>
-                                <input type="text" class="form-control" id="polygon_coordinates" name="coordinates" readonly>
+                                <input type="text" class="form-control" id="polygon_coordinates" name="coordinates" value="{{ $zone->coordinates }}" readonly>
                             </div>
-
 
                             <div id="map" class="my-3" style="height: 400px;"></div>
                             <div class="d-flex justify-content-between">
@@ -42,45 +42,11 @@
                                 <button type="button" id="clear_button" class="btn btn-secondary">Clear Areas</button>
                             </div>
                         </form>
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="card card-block card-stretch">
-                    <div class="table-responsive">
-                        <table id="datatable" class="table table-striped border">
-                            <th>#</th>
-                            <th class="text-center">اسم المنطقة</th>
-                            <th class="text-center">العمليات</th>
-                            @if ($zones->count() == 0)
-                                <tr>
-                                    <td colspan="3" class="text-center">لا يوجد مناطق</td>
-                                </tr>
-                            @else
-                                @foreach ($zones as $key => $zone)
-                                <tr>
-                                    <td class="text-center">{{ $key + 1 }}</td>
-                                    <td class="text-center">{{ $zone->name }}</td>
-                                    <td class="d-flex justify-content-center align-items-center gap-3">
-                                        <a href="{{ route('zone.edit', $zone->id) }}"
-                                            class="btn btn-primary btn-sm"><i class="fa fa-edit m-0"></i></a>
-                                        <form action="{{ route('zone.destroy', $zone->id) }}" method="POST">
-                                            @csrf
-                                            <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash m-0"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            @endif
-                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCUO0qLxbHg-sN2htKQmuLH_NWG1Mg0IDI&libraries=drawing,places&v=3.45.8"></script>
     <script>
@@ -89,6 +55,7 @@
         let selectedShape;
         let polygonCoordinates = [];
         let allShapes = []; // Array to store all drawn shapes
+        let existingPolygonCoordinates = <?= json_encode($zone->coordinates) ?>;
 
         function initMap() {
             // Initialize the map
@@ -119,7 +86,36 @@
             });
             drawingManager.setMap(map);
 
-            // Add event listener when the polygon is completed
+            // Draw the existing polygon if coordinates exist
+            if (existingPolygonCoordinates.length > 0) {
+                let existingPolygon = new google.maps.Polygon({
+                    paths: JSON.parse(existingPolygonCoordinates),
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#FF0000',
+                    fillOpacity: 0.35,
+                    editable: true,
+                });
+                existingPolygon.setMap(map);
+                selectedShape = existingPolygon;
+                allShapes.push(existingPolygon);
+
+                // Set up event listener to handle edits on existing polygon
+                google.maps.event.addListener(existingPolygon.getPath(), 'set_at', updateCoordinates);
+                google.maps.event.addListener(existingPolygon.getPath(), 'insert_at', updateCoordinates);
+
+                // Save the coordinates
+                polygonCoordinates = existingPolygon.getPath().getArray().map(function(latLng) {
+                    return {
+                        lat: latLng.lat(),
+                        lng: latLng.lng()
+                    };
+                });
+                document.getElementById('polygon_coordinates').value = JSON.stringify(polygonCoordinates);
+            }
+
+            // Event listener for drawing new polygon
             google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
                 if (event.type === 'polygon') {
                     if (selectedShape) {
@@ -141,10 +137,20 @@
                 }
             });
 
-            // Add event listener to clear button
+            // Clear all shapes
             document.getElementById('clear_button').addEventListener('click', function() {
                 clearAllShapes();
             });
+        }
+
+        function updateCoordinates() {
+            polygonCoordinates = selectedShape.getPath().getArray().map(function(latLng) {
+                return {
+                    lat: latLng.lat(),
+                    lng: latLng.lng()
+                };
+            });
+            document.getElementById('polygon_coordinates').value = JSON.stringify(polygonCoordinates);
         }
 
         function clearAllShapes() {

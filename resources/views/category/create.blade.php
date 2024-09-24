@@ -56,7 +56,7 @@
                                     @php
                                         $extention = imageExtention(getSingleMedia($categorydata, 'image'));
                                     @endphp
-                                    <img id="category_image_preview" src="{{ getSingleMedia($categorydata, 'image') }}"
+                                    <img id="category_image_preview_old" src="{{ getSingleMedia($categorydata, 'image') }}"
                                         alt="#" class="attachment-image mt-1"
                                         style="background-color:{{ $extention == 'svg' ? $categorydata->color : '' }}">
                                     <a class="text-danger remove-file"
@@ -69,7 +69,7 @@
                                     </a>
                                 </div>
                             @endif
-                            <img id="category_image_preview" src="" width="150px" />
+                            <!-- <img id="category_image_preview" src="" width="150px" /> -->
 
 
                             <div class="form-group col-md-8">
@@ -109,29 +109,29 @@
 
                             <!-- Zones Field (Multiple Select) -->
                             <div class="row">
-                                <div class="form-group col-md-11 ml-3">
+                                <div class="form-group col-md-11 mr-3">
                                     {{ Form::label('zones', 'المناطق' . ' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
-                                    {{-- {{ Form::select('zones[]', $zonesList, old('zones'), ['class' => 'form-control select2js', 'multiple' => 'multiple', 'required']) }} --}}
-                                    {{ Form::text('zones', old('zones'), ['class' => 'form-control', 'required' ,'placeholder' => 'ادخل المناطق']) }}
+                                     {{ Form::select('zones[]', $zones_list, old('zones', $selectedZones), ['class' => 'form-control select2js', 'multiple' => 'multiple', 'required']) }} 
+                                    <!-- {{ Form::text('zones', old('zones'), ['class' => 'form-control', 'required' ,'placeholder' => 'ادخل المناطق']) }} -->
                                     <small class="help-block with-errors text-danger"></small>
                                 </div>
 
 
                                 {{-- add commision field that thake the % of commistion --}}
                                     
-                                <div class="form-group col-md-11 ml-3">
+                                <div class="form-group col-md-11 mr-3">
                                     {{ Form::label('commission', 'العموله %' . ' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
                                     {{ Form::number('commission', old('commission'), ['class' => 'form-control', 'required' ,'placeholder' => 'ادخل العموله %']) }}
                                     <small class="help-block with-errors text-danger"></small>
                                 </div>
 
-                                <div class="form-group col-md-11 ml-3">
+                                <div class="form-group col-md-11 mr-3">
                                     {{ Form::label('description', "الوصف", ['class' => 'form-control-label']) }}
                                     {{ Form::textarea('description', null, ['class' => 'form-control textarea', 'rows' => 3, 'placeholder' => __('الوصف')]) }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-12 ml-3">
+                                <div class="form-group col-md-12 mr-3">
                                     <div class="custom-control custom-switch">
                                         <!-- <input type="checkbox" name="is_featured" value="1" class="custom-control-input" id="is_featured"> -->
                                         {{ Form::checkbox('is_featured', $categorydata->is_featured, null, ['class' => 'custom-control-input', 'id' => 'is_featured']) }}
