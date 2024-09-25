@@ -37,10 +37,24 @@ class CategoryController extends Controller
         $pageTitle = trans('messages.list_form_title',['form' => trans('messages.category')] );
         $auth_user = authSession();
         $assets = ['datatable'];
-        $categories = Category::with('subcategories.subcategorieslevel3.subcategorieslevel4')->get();
+        $categories = Category::with('subcategories')->get();
+        $categories = $this->buildTree($categories);
         return view('category.index', compact('pageTitle','auth_user','assets','filter','categories'));
     }
-
+    private function buildTree($categories, $parentId = null)
+    {
+        $branch = [];
+        foreach ($categories as $category) {
+            if ($category->parent_id == $parentId) {
+                $children = $this->buildTree($categories, $category->id);
+                if ($children) {
+                    $category->subcategories = $children; // Add children to the category
+                }
+                $branch[] = $category; // Add category to the branch
+            }
+        }
+        return $branch;
+    }
 
     public function index_data(DataTables $datatable,Request $request)
     {
@@ -161,9 +175,11 @@ class CategoryController extends Controller
             $pageTitle = trans('messages.add_button_form',['form' => trans('messages.category')]);
             $categorydata = new Category;
         }
-        $categories = Category::with('subcategories.subcategorieslevel3')->get();
+        $categories_t = Category::with('subcategories')->get();
+        $categories_tree = $this->buildTree($categories_t);
+        $categories = Category::all();
         $zones_list = Zone::all()->pluck('name','id');
-        return view('category.create', compact('pageTitle' ,'categorydata' ,'auth_user','categories','zones_list' , "selectedZones" ));
+        return view('category.create', compact('pageTitle' ,'categorydata' ,'auth_user','categories','zones_list' , "selectedZones" ,'categories_tree' ));
     }
 
     /**
@@ -273,7 +289,6 @@ class CategoryController extends Controller
             return  redirect()->back()->withErrors(trans('messages.demo_permission_denied'));
         }
         $category = Category::find($id);
-
         $msg= __('messages.msg_fail_to_delete',['name' => __('messages.category')] );
         
         if($category!='') { 
@@ -291,7 +306,10 @@ class CategoryController extends Controller
     public function action(Request $request){
         $id = $request->id;
         $category  = Category::withTrashed()->where('id',$id)->first();
-        $msg = __('messages.t_found_entry',['name' => __('messages.category')] );
+        if($category == null){
+            return comman_custom_response(['message'=> __('messages.not_found_entry',['name' => __('messages.category')] ) , 'status' => false]);
+        }
+        // $msg = __('messages.not_found_entry',['name' => __('messages.category')] );
         if($request->type == 'restore') {
             $category->restore();
             $msg = __('messages.msg_restored',['name' => __('messages.category')] );

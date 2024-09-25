@@ -5,47 +5,20 @@
             <input type="text" id="categorySearch" placeholder="ابحث عن فئة..." class="form-control mb-3" style="direction: rtl; text-align: right;">
             <ul id="categoryTree" style="direction: rtl;">
                 @foreach ($categories as $category)
-                    <li class="child">
-                        <span>{{ $category->name }}</span>
-                        @if ($category->subcategories !== null)
-                            <ul>
-                                @foreach ($category->subcategories as $subcategory)
-                                    <li class="child">
-                                        <span>{{ $subcategory->name }}</span>
-                                        @if ($subcategory->subcategorieslevel3 !== null)
-                                            <ul>
-                                                @foreach ($subcategory->subcategorieslevel3 as $subcategorieslevel3)
-                                                    <li class="child">
-                                                        <span>{{ $subcategorieslevel3->name }}</span>
-                                                        @if ($subcategorieslevel3->subcategorieslevel4 !== null)
-                                                            <ul>
-                                                                @foreach ($subcategorieslevel3->subcategorieslevel4 as $subcategorieslevel4)
-                                                                    <li class="child">
-                                                                        <span>{{ $subcategorieslevel4->name }}</span>
-                                                                    </li>
-                                                                @endforeach
-                                                            </ul>
-                                                        @endif
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        @endif
-                                    </li>
-                                @endforeach
-                            </ul>
-                        @endif
-                    </li>
+                    @include('category.tree', ['category' => $category])
                 @endforeach
             </ul>
         </div>
-    </div>      
+    </div>
 </div>
+
 
 <style>
 ul{
 list-style-type: none !important;
 }
 ul#categoryTree {
+    border-right: 1px solid #ccc;
     list-style-type: none;
     padding-right: 20px;
     padding-left: 0;
@@ -60,21 +33,16 @@ ul#categoryTree {
 ul#categoryTree li:before {
     content: '';
     position: absolute;
-    right: -15px;
-    top: 10px;
+    right: -20px;
+    top: 0px;
     height: 15px;
     width: 15px;
-    border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
 }
 
-ul#categoryTree li:last-child:before {
-    border-right: 1px solid transparent;
-}
 
 ul#categoryTree ul li:before {
     border-right: 1px solid #ccc;
-    border-bottom: none;
 }
 
 .hidden {
@@ -92,6 +60,18 @@ input#categorySearch {
 
 #categoryTree span {
     cursor: pointer;
+    font-size: 16px;
+}
+ul#categoryTree li span a {
+    color: white;
+    margin: 0;
+    padding: 2px;
+    font-size: 10px;
+    display: none;
+}
+
+ul#categoryTree li:hover a {
+    display: inline;
 }
 </style>
 

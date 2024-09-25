@@ -14,7 +14,7 @@ class Category extends BaseModel implements HasMedia
     use HasFactory,HasRoles,InteractsWithMedia,SoftDeletes;
     protected $table = 'categories';
     protected $fillable = [
-        'name', 'description', 'is_featured', 'status' , 'color' , 'zones' , 'image' , 'cover_image' , 'commission' 
+        'name', 'description', 'is_featured', 'status' , 'color' , 'zones' , 'image' , 'cover_image' , 'commission' , 'parent_id'
     ];
     protected $casts = [
         'status'    => 'integer',
@@ -30,10 +30,24 @@ class Category extends BaseModel implements HasMedia
         return $query->orderBy('updated_at', 'desc');
     }
 
+    // public function subcategories()
+    // {
+    //     return $this->hasMany(SubCategory::class, 'category_id');
+    // }
     public function subcategories()
     {
-        return $this->hasMany(SubCategory::class, 'category_id');
+        return $this->hasMany(Category::class, 'parent_id');
     }
-    
+
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
+    }
+
+    // Define the relationship to the children (subcategories)
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'parent_id');
+    }
     
 }

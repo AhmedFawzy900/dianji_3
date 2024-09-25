@@ -24,7 +24,7 @@
       <div class="card col-md-8">
         <div class="card-body">
           <div class="row justify-content-between ">
-  
+
             <div class="d-flex justify-content-start" style="direction: rtl">
               <div class="input-group ml-2">
                 <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>
@@ -53,7 +53,7 @@
                       <option value="restore">{{ __('messages.restore') }}</option>
                       <option value="permanently-delete">{{ __('messages.permanent_dlt') }}</option>
                     </select>
-  
+
                     <div class="select-status d-none quick-action-field" id="change-status-action" style="width:120px">
                       <select name="status" class="form-control select2" id="status">
                         <option value="1">{{ __('messages.active') }}</option>
@@ -73,25 +73,26 @@
                       data-message='{{ __("Do you want to perform this action?") }}'
                       disabled>{{ __('messages.apply') }}</button>
                 </div>
-  
+
                 </form>
               </div>
             </div>
-  
-  
+
+
             <div class="table-responsive">
               <table id="datatable" class="table table-striped border">
-  
+
               </table>
             </div>
           </div>
         </div>
       </div>
-  
+
       <div class="col-md-4">
         @include('components.category-tree', ['categories' => $categories])
       </div>
-  
+      
+
     </div>
   </div>
   <script>

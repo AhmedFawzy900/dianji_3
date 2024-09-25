@@ -30,6 +30,7 @@ class CategoryRequest extends FormRequest
             'zones'             => 'required',
             'commission' => 'nullable|numeric|min:0|max:100',
             'status'            => 'required',
+            'parent_id' => 'nullable|exists:categories,id'
         ];
     }
 }
