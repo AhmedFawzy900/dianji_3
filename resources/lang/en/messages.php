@@ -176,7 +176,7 @@
 'book_at' => 'تم الحجز في',
 'start_at' => 'يبدأ في',
 'end_at' => 'ينتهي في',
-'payment' => 'المدوفات',
+'payment' => 'المدفوعات',
 'payment_status' => 'حالة الدفع',
 'payment_method' => 'طريقة الدفع',
 'payment_type' => 'نوع الدفع',

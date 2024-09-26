@@ -96,6 +96,9 @@ class CategoryController extends Controller
                     </div>
                 </div>';
             })
+            ->editColumn('parent_name', function ($query) {
+                return $query->parent_id ? $query->parent->name : '-';
+            })
             ->editColumn('status' , function ($query){
                 $disabled = $query->trashed() ? 'disabled': '';
                 return '<div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">

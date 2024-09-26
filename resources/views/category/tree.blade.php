@@ -2,7 +2,9 @@
     <span class="category-icon"><i class="fas fa-folder"></i></span>
     <span class="category-name">{{ $category->name }}</span>
     <span class="category-action">
-        <a href="{{ route('category.create', $category->id) }}" class="text-info"><i class="fas fa-edit"></i></a>
+        
+        <a href="{{ route('category.create', ['id' => $category->id]) }}" class="text-info"><i class="fas fa-eye"></i></a>
+        <a href="{{ route('category.create', ['id' => $category->id]) }}" class="text-info"><i class="fas fa-edit"></i></a>
         <!-- Delete button -->
          <a>
              <button class="text-danger delete-category" type="submit" onclick="deleteCategory({{ $category->id }})" data-id="{{ $category->id }}">

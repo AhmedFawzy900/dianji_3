@@ -51,7 +51,7 @@
                                 'data-ajax--url' => route('ajax-list', ['type' => 'category']),
                             ]) }}
                         </div>
-                        <div class="form-group col-md-4 d-none" id="select_subcategory">
+                        <!-- <div class="form-group col-md-4 d-none" id="select_subcategory">
                             {{ Form::label('name', __("اختر الفئة الفرعية").'',['class'=>'form-control-label'],false) }}
                             <br />
                             {{ Form::select('subcategory_id', [optional($servicepackage->subcategory)->id => optional($servicepackage->subcategory)->name], optional($servicepackage->subcategory)->id, [
@@ -60,7 +60,7 @@
                                 'data-placeholder' => __("اختر الفئة الفرعية"),
                                
                             ]) }}
-                        </div>
+                        </div> -->
                         <div class="form-group col-md-4">
                             {{ Form::label('name', __("اختر الخدمة").' <span class="text-danger">*</span>',['class'=>'form-control-label'],false) }}
                             <br />

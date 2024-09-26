@@ -13,7 +13,7 @@ $menu->add('<span>' . __('لوحة التحكم') . '</span><span class="custom-
     <path d="M2 18.5C2 19.4319 2 19.8978 2.15224 20.2654C2.35523 20.7554 2.74458 21.1448 3.23463 21.3478C3.60218 21.5 4.06812 21.5 5 21.5H7C7.93188 21.5 8.39782 21.5 8.76537 21.3478C9.25542 21.1448 9.64477 20.7554 9.84776 20.2654C10 19.8978 10 19.4319 10 18.5C10 17.5681 10 17.1022 9.84776 16.7346C9.64477 16.2446 9.25542 15.8552 8.76537 15.6522C8.39782 15.5 7.93188 15.5 7 15.5H5C4.06812 15.5 3.60218 15.5 3.23463 15.6522C2.74458 15.8552 2.35523 16.2446 2.15224 16.7346C2 17.1022 2 17.5681 2 18.5Z" stroke="currentColor" stroke-width="1.5" />
 </svg>')
 ->link->attr(['class' => '']);
-$menu->add('<span>' . __('التحليلات') . '</span><span class="custom-tooltip"><span class="tooltip-text">' . __('messages.dashboard') . '</span></span>', ['route' => 'home'])
+$menu->add('<span>' . __('التحليلات') . '</span><span class="custom-tooltip"><span class="tooltip-text">' . __('messages.dashboard') . '</span></span>', ['route' => 'statics.index'])
 ->prepend('<svg class="mr-2" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M13.5 15.5C13.5 13.6144 13.5 12.6716 14.0858 12.0858C14.6716 11.5 15.6144 11.5 17.5 11.5C19.3856 11.5 20.3284 11.5 20.9142 12.0858C21.5 12.6716 21.5 13.6144 21.5 15.5V17.5C21.5 19.3856 21.5 20.3284 20.9142 20.9142C20.3284 21.5 19.3856 21.5 17.5 21.5C15.6144 21.5 14.6716 21.5 14.0858 20.9142C13.5 20.3284 13.5 19.3856 13.5 17.5V15.5Z" stroke="currentColor" stroke-width="1.5" />
     <path d="M2 8.5C2 10.3856 2 11.3284 2.58579 11.9142C3.17157 12.5 4.11438 12.5 6 12.5C7.88562 12.5 8.82843 12.5 9.41421 11.9142C10 11.3284 10 10.3856 10 8.5V6.5C10 4.61438 10 3.67157 9.41421 3.08579C8.82843 2.5 7.88562 2.5 6 2.5C4.11438 2.5 3.17157 2.5 2.58579 3.08579C2 3.67157 2 4.61438 2 6.5V8.5Z" stroke="currentColor" stroke-width="1.5" />
@@ -149,7 +149,10 @@ $menu->systemusers->add('<span>' . __('كل المستخدمين') . '</span>', 
     <path d="M2 4.875C1.3775 4.875 0.875 5.3775 0.875 6C0.875 6.6225 1.3775 7.125 2 7.125C2.6225 7.125 3.125 6.6225 3.125 6C3.125 5.3775 2.6225 4.875 2 4.875ZM2 0.375C1.3775 0.375 0.875 0.8775 0.875 1.5C0.875 2.1225 1.3775 2.625 2 2.625C2.6225 2.625 3.125 2.1225 3.125 1.5C3.125 0.8775 2.6225 0.375 2 0.375ZM2 9.375C1.3775 9.375 0.875 9.885 0.875 10.5C0.875 11.115 1.385 11.625 2 11.625C2.615 11.625 3.125 11.115 3.125 10.5C3.125 9.885 2.6225 9.375 2 9.375ZM4.25 11.25H14.75V9.75H4.25V11.25ZM4.25 6.75H14.75V5.25H4.25V6.75ZM4.25 0.75V2.25H14.75V0.75H4.25Z" fill="#6C757D" />
 </svg>')
 ->link->attr(['class' => '']);
-$menu->systemusers->add('<span>' . __('الادوار والاذونات ') . '</span>', ['class' => 'sidebar-layout', 'route' => 'provider.index'])
+$menu->systemusers->add('<span>' . __('الادوار والاذونات ') . '</span>', [
+    'class' => 'sidebar-layout',
+    'route' => 'setting.index'
+])
 ->data('permission', 'provider list')
 ->prepend('<svg width="15" height="15" class="sidebar-menu-icon" viewBox="0 0 15 12" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M2 4.875C1.3775 4.875 0.875 5.3775 0.875 6C0.875 6.6225 1.3775 7.125 2 7.125C2.6225 7.125 3.125 6.6225 3.125 6C3.125 5.3775 2.6225 4.875 2 4.875ZM2 0.375C1.3775 0.375 0.875 0.8775 0.875 1.5C0.875 2.1225 1.3775 2.625 2 2.625C2.6225 2.625 3.125 2.1225 3.125 1.5C3.125 0.8775 2.6225 0.375 2 0.375ZM2 9.375C1.3775 9.375 0.875 9.885 0.875 10.5C0.875 11.115 1.385 11.625 2 11.625C2.615 11.625 3.125 11.115 3.125 10.5C3.125 9.885 2.6225 9.375 2 9.375ZM4.25 11.25H14.75V9.75H4.25V11.25ZM4.25 6.75H14.75V5.25H4.25V6.75ZM4.25 0.75V2.25H14.75V0.75H4.25Z" fill="#6C757D" />
@@ -351,7 +354,8 @@ $menu->add('<span>' . __('طلبات التصفية') . '</span><span class="cus
 ->data('permission', 'earning list');
 
 if (optional($othersetting)->wallet == 1) {
-$menu->add('<span>' . __('messages.wallet') . '</span><span class="custom-tooltip"><span class="tooltip-text">' . __('messages.wallet') . '</span></span>', ['route' => 'wallet.index'])
+
+$menu->add('<span>' . __('messages.wallet') . '</span><span class="custom-tooltip"><span class="tooltip-text">' . __('messages.wallet') . '</span></span>', ['class'=>''])
 ->prepend('<svg class="mr-2" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M6 8H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
     <path d="M20.8333 9H18.2308C16.4465 9 15 10.3431 15 12C15 13.6569 16.4465 15 18.2308 15H20.8333C20.9167 15 20.9583 15 20.9935 14.9979C21.5328 14.965 21.9623 14.5662 21.9977 14.0654C22 14.0327 22 13.994 22 13.9167V10.0833C22 10.006 22 9.96726 21.9977 9.9346C21.9623 9.43384 21.5328 9.03496 20.9935 9.00214C20.9583 9 20.9167 9 20.8333 9Z" stroke="currentColor" stroke-width="1.5" />
@@ -360,9 +364,11 @@ $menu->add('<span>' . __('messages.wallet') . '</span><span class="custom-toolti
 </svg>
 ')
 ->nickname('wallet')
-->data('permission', 'wallet list');
+->data('permission', 'wallet list')
+->link->attr(['class' => ''])
+->href('#wallet');;
 
-$menu->wallet->add('<span>' . __('محافظ العملاء') . '</span><span class="custom-tooltip"><span class="tooltip-text">' . __('messages.wallet') . '</span></span>', ['route' => 'wallet.index'])
+$menu->wallet->add('<span>' . __('محافظ العملاء') . '</span><span class="custom-tooltip"><span class="tooltip-text">' . __('messages.wallet') . '</span></span>', ['class' => 'sidebar-layout','route' => 'wallet.customers'])
 ->data('permission', 'wallet list')
 ->prepend('<svg class="mr-2" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M6 8H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -371,7 +377,7 @@ $menu->wallet->add('<span>' . __('محافظ العملاء') . '</span><span cl
     <path d="M17.9912 12H18.0002" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
 </svg>
 ');
-$menu->wallet->add('<span>' . __('محافظ مزودين الخدمة') . '</span><span class="custom-tooltip"><span class="tooltip-text">' . __('messages.wallet') . '</span></span>', ['route' => 'wallet.index'])
+$menu->wallet->add('<span>' . __('محافظ مزودين الخدمة') . '</span><span class="custom-tooltip"><span class="tooltip-text">' . __('messages.wallet') . '</span></span>', ['class' => 'sidebar-layout','route' => 'wallet.index'])
 ->data('permission', 'wallet list')
 ->prepend('<svg class="mr-2" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M6 8H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -432,7 +438,7 @@ $menu->add('<span>' . __('messages.pushnotification_settings') . '</span><span c
 </svg>
 ')
 ->link->attr(['class' => '']);
-$menu->add('<span>' . __('sms') . '</span><span class="custom-tooltip"><span class="tooltip-text">' . __('messages.pushnotification_settings') . '</span></span>', ['route' => 'pushNotification.index'])
+$menu->add('<span>' . __('sms') . '</span><span class="custom-tooltip"><span class="tooltip-text">' . __('messages.pushnotification_settings') . '</span></span>', ['route' => 'setting.index'])
 ->data('role', ['admin', 'provider', 'demo_admin'])
 ->prepend('<svg class="mr-2" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M22 10.5V12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2H13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
@@ -442,7 +448,7 @@ $menu->add('<span>' . __('sms') . '</span><span class="custom-tooltip"><span cla
 </svg>
 ')
 ->link->attr(['class' => '']);
-$menu->add('<span>' . __('جروبات المستخدمين') . '</span><span class="custom-tooltip"><span class="tooltip-text">' . __('messages.pushnotification_settings') . '</span></span>', ['route' => 'pushNotification.index'])
+$menu->add('<span>' . __('جروبات المستخدمين') . '</span><span class="custom-tooltip"><span class="tooltip-text">' . __('messages.groups') . '</span></span>', ['route' => 'groups.index'])
 ->data('role', ['admin', 'provider', 'demo_admin'])
 ->prepend('<svg class="mr-2" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M22 10.5V12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2H13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
@@ -543,7 +549,7 @@ $menu->document->add('<span>' . __('messages.add_form_title', ['form' => trans('
 ->data('permission', 'document add')
 ->link->attr(['class' => '']);
 
-$menu->add('<span>' . __('اللغات') . '</span><span class="custom-tooltip"><span class="tooltip-text">' . __('messages.blog') . '</span></span>', ['route' => 'blog.index'])
+$menu->add('<span>' . __('اللغات') . '</span><span class="custom-tooltip"><span class="tooltip-text">' . __('messages.blog') . '</span></span>', ['route' => 'setting.index'])
 ->data('role', ['admin', 'demo_admin'])
 ->prepend('<svg class="mr-2" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M18.18 8.03933L18.6435 7.57589C19.4113 6.80804 20.6563 6.80804 21.4241 7.57589C22.192 8.34374 22.192 9.58868 21.4241 10.3565L20.9607 10.82M18.18 8.03933C18.18 8.03933 18.238 9.02414 19.1069 9.89309C19.9759 10.762 20.9607 10.82 20.9607 10.82M18.18 8.03933L13.9194 12.2999C13.6308 12.5885 13.4865 12.7328 13.3624 12.8919C13.2161 13.0796 13.0906 13.2827 12.9882 13.4975C12.9014 13.6797 12.8368 13.8732 12.7078 14.2604L12.2946 15.5L12.1609 15.901M20.9607 10.82L16.7001 15.0806C16.4115 15.3692 16.2672 15.5135 16.1081 15.6376C15.9204 15.7839 15.7173 15.9094 15.5025 16.0118C15.3203 16.0986 15.1268 16.1632 14.7396 16.2922L13.5 16.7054L13.099 16.8391M13.099 16.8391L12.6979 16.9728C12.5074 17.0363 12.2973 16.9867 12.1553 16.8447C12.0133 16.7027 11.9637 16.4926 12.0272 16.3021L12.1609 15.901M13.099 16.8391L12.1609 15.901" stroke="currentColor" stroke-width="1.5" />

@@ -44,6 +44,8 @@ use App\Http\Controllers\ProviderSlotController;
 use App\Http\Controllers\NotificationTemplatesController;
 use App\Http\Controllers\ServiceAddonController;
 use App\Http\Controllers\FrontendSettingController;
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\StaticsController;
 use App\Http\Controllers\SubCategoryLevel3Controller;
 use App\Http\Controllers\SubCategoryLevel4Controller;
 use App\Http\Controllers\VerificationController;
@@ -398,6 +400,7 @@ Route::group(['middleware' => ['auth', 'verified']], function()
     // Route::post('enable-user-wallet', [SettingController::class, 'enableUserWallet'])->name('enableUserWallet');
 
     Route::resource('wallet', WalletController::class);
+    Route::get('wallet-customers', [WalletController::class, 'customers_index'])->name('wallet.customers');
     Route::get('wallet-index-data',[WalletController::class,'index_data'])->name('wallet.index_data');
     Route::post('wallet-bulk-action', [WalletController::class, 'bulk_action'])->name('wallet.bulk-action');
     Route::post('wallet/{id}', [WalletController::class, 'destroy'])->name('wallet.destroy.id');
@@ -496,7 +499,9 @@ Route::group(['middleware' => ['auth', 'verified']], function()
     Route::post('/zone/{id}', [ZoneController::class, 'destroy'])->name('zone.destroy');
     Route::get('/zone/edit/{id}', [ZoneController::class, 'edit'])->name('zone.edit');
     Route::post('/zone/update/{id}', [ZoneController::class, 'update'])->name('zone.update');
-
+    
+    Route::resource('groups', GroupController::class);
+    Route::resource('statics', StaticsController::class);
 
 });
 Route::get('/ajax-list',[HomeController::class, 'getAjaxList'])->name('ajax-list');

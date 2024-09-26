@@ -38,14 +38,14 @@
                                         ]) }}
 
                             </div>
-                            <div class="form-group col-md-4">
+                            <!-- <div class="form-group col-md-4">
                                 {{ Form::label('subcategory_id', __("القسم الفرعي"),['class'=>'form-control-label'],false) }}
                                 <br />
                                 {{ Form::select('subcategory_id', [], [
                                         'class' => 'select2js form-group subcategory_id',
                                         'data-placeholder' => __("القسم الفرعي"),
                                     ]) }}
-                            </div>
+                            </div> -->
 
                             @if(auth()->user()->hasAnyRole(['admin','demo_admin']))
                             <div class="form-group col-md-4">

@@ -24,18 +24,33 @@ class WalletController extends Controller
         $filter = [
             'status' => $request->status,
         ];
-        $pageTitle = __('messages.list_form_title',['form' => __('messages.wallet')] );
+        $pageTitle = __('messages.list_form_title', ['form' => __('messages.wallet')]);
         $auth_user = authSession();
         $assets = ['datatable'];
-        return view('wallet.index', compact('pageTitle','auth_user','assets','filter'));
+        return view('wallet.index', compact('pageTitle', 'auth_user', 'assets', 'filter'));
+    }
+    public function customers_index(Request $request)
+    {
+        $filter = [
+            'status' => $request->status,
+        ];
+        $pageTitle = __('messages.list_form_title', ['form' => __('messages.wallet')]);
+        $auth_user = authSession();
+        $assets = ['datatable'];
+        return view('wallet.customers', compact('pageTitle', 'auth_user', 'assets', 'filter'));
     }
 
 
-    public function index_data(DataTables $datatable,Request $request)
+    public function index_data(DataTables $datatable, Request $request)
     {
-        $query = Wallet::query();
+        $type = $request->input('type');
+        $query = Wallet::query()
+        ->join('users', 'wallets.user_id', '=', 'users.id')
+        ->where('users.user_type', $type)
+        ->select('wallets.*')
+        ->orderBy('wallets.updated_at', 'desc');
         $filter = $request->filter;
-        $query = $query->orderBy('updated_at','desc');
+        // $query = $query->orderBy('wallets.updated_at', 'desc');
         if (isset($filter)) {
             if (isset($filter['column_status'])) {
                 $query->where('status', $filter['column_status']);
@@ -47,31 +62,31 @@ class WalletController extends Controller
 
         return $datatable->eloquent($query)
             ->addColumn('check', function ($row) {
-                return '<input type="checkbox" class="form-check-input select-table-row"  id="datatable-row-'.$row->id.'"  name="datatable_ids[]" value="'.$row->id.'" onclick="dataTableRowCheck('.$row->id.')">';
+                return '<input type="checkbox" class="form-check-input select-table-row"  id="datatable-row-' . $row->id . '"  name="datatable_ids[]" value="' . $row->id . '" onclick="dataTableRowCheck(' . $row->id . ')">';
             })
-            ->editColumn('title', function($query){
-                return '<a class="btn-link btn-link-hover" href='.route('wallet.show', $query->user_id).'>'.$query->title.'</a>';
+            ->editColumn('title', function ($query) {
+                return '<a class="btn-link btn-link-hover" href=' . route('wallet.show', $query->user_id) . '>' . $query->title . '</a>';
             })
 
-            ->editColumn('user_id' , function ($query){
+            ->editColumn('user_id', function ($query) {
                 return view('wallet.user', compact('query'));
             })
-            ->editColumn('amount' , function ($query){
+            ->editColumn('amount', function ($query) {
                 return getPriceFormat($query->amount);
             })
-            ->editColumn('status' , function ($query){
+            ->editColumn('status', function ($query) {
                 return '<div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">
                     <div class="custom-switch-inner">
-                        <input type="checkbox" class="custom-control-input  change_status" data-type="wallet_status" '.($query->status ? "checked" : "").'  value="'.$query->id.'" id="'.$query->id.'" data-id="'.$query->id.'">
-                        <label class="custom-control-label" for="'.$query->id.'" data-on-label="" data-off-label=""></label>
+                        <input type="checkbox" class="custom-control-input  change_status" data-type="wallet_status" ' . ($query->status ? "checked" : "") . '  value="' . $query->id . '" id="' . $query->id . '" data-id="' . $query->id . '">
+                        <label class="custom-control-label" for="' . $query->id . '" data-on-label="" data-off-label=""></label>
                     </div>
                 </div>';
             })
-            ->addColumn('action', function($wallet){
-                return view('wallet.action',compact('wallet'))->render();
+            ->addColumn('action', function ($wallet) {
+                return view('wallet.action', compact('wallet'))->render();
             })
             ->addIndexColumn()
-            ->rawColumns(['title','action','status','check'])
+            ->rawColumns(['title', 'action', 'status', 'check'])
             ->toJson();
     }
 
@@ -114,14 +129,14 @@ class WalletController extends Controller
         $auth_user = authSession();
 
         $wallet = Wallet::find($id);
-        $pageTitle = trans('messages.update_form_title',['form'=>trans('messages.wallet')]);
+        $pageTitle = trans('messages.update_form_title', ['form' => trans('messages.wallet')]);
 
-        if($wallet == null){
-            $pageTitle = trans('messages.add_button_form',['form' => trans('messages.wallet')]);
+        if ($wallet == null) {
+            $pageTitle = trans('messages.add_button_form', ['form' => trans('messages.wallet')]);
             $wallet = new Wallet;
         }
 
-        return view('wallet.create', compact('pageTitle' ,'wallet' ,'auth_user' ));
+        return view('wallet.create', compact('pageTitle', 'wallet', 'auth_user'));
     }
 
     /**
@@ -132,13 +147,13 @@ class WalletController extends Controller
      */
     public function store(Request $request)
     {
-        if(demoUserPermission()){
+        if (demoUserPermission()) {
             return  redirect()->back()->withErrors(trans('messages.demo_permission_denied'));
         }
         $data = $request->all();
         $data['user_id'] = !empty($request->user_id) ? $request->user_id : auth()->user()->id;
-        $wallet = Wallet::where('user_id',$data['user_id'])->first();
-        if($wallet && !$data['id']){
+        $wallet = Wallet::where('user_id', $data['user_id'])->first();
+        if ($wallet && !$data['id']) {
             $message = __('messages.already_wallet');
             return redirect()->back()->withError($message);
         }
@@ -146,32 +161,31 @@ class WalletController extends Controller
         //     $data['amount'] = $wallet->amount + $request->amount;
         // }
 
-        $result = Wallet::updateOrCreate(['id' => $data['id'] ],$data);
+        $result = Wallet::updateOrCreate(['id' => $data['id']], $data);
 
 
-        $message = trans('messages.update_form',['form' => trans('messages.wallet')]);
-        if($result->wasRecentlyCreated){
+        $message = trans('messages.update_form', ['form' => trans('messages.wallet')]);
+        if ($result->wasRecentlyCreated) {
             $activity_data = [
                 'activity_type' => 'add_wallet',
                 'wallet' => $result,
             ];
             $this->sendNotification($activity_data);
 
-            $message = trans('messages.save_form',['form' => trans('messages.wallet')]);
-        }else{
-            if($wallet->amount  != $data['amount']){
+            $message = trans('messages.save_form', ['form' => trans('messages.wallet')]);
+        } else {
+            if ($wallet->amount  != $data['amount']) {
                 $activity_data = [
                     'activity_type' => 'update_wallet',
                     'wallet' => $result,
-                    'added_amount' =>$request->amount
+                    'added_amount' => $request->amount
                 ];
                 $this->sendNotification($activity_data);
-
             }
         }
-        if($request->is('api/*')) {
+        if ($request->is('api/*')) {
             return comman_message_response($message);
-		}
+        }
         return redirect(route('wallet.index'))->withSuccess($message);
     }
 
@@ -183,28 +197,29 @@ class WalletController extends Controller
      */
     public function show($id)
     {
-        $pageTitle = __('messages.list_form_title',['form' => __('messages.wallet_history')] );
+        $pageTitle = __('messages.list_form_title', ['form' => __('messages.wallet_history')]);
         $auth_user = authSession();
         $assets = ['datatable'];
-        return view('wallet.view', compact('pageTitle','auth_user','assets','id'));
+        return view('wallet.view', compact('pageTitle', 'auth_user', 'assets', 'id'));
     }
 
-    public function wallethistory_index_data(DataTables $datatable,$id){
-        $query = WalletHistory::where('user_id',$id)->orderBy('id','desc')->newQuery();
+    public function wallethistory_index_data(DataTables $datatable, $id)
+    {
+        $query = WalletHistory::where('user_id', $id)->orderBy('id', 'desc')->newQuery();
 
         if (auth()->user()->hasAnyRole(['admin'])) {
             $query->newquery();
         }
 
-        return $datatable ->eloquent($query)
-        ->editColumn('user_id' , function ($history){
-            return ($history->user_id != null && isset($history->providers)) ? $history->providers->display_name : '-';
-        })
-        ->editColumn('activity_type' , function ($history){
-            return $history->activity_type ? str_replace("_"," ",ucfirst($history->activity_type)) : '-';
-        })
-        ->addIndexColumn()
-        ->toJson();
+        return $datatable->eloquent($query)
+            ->editColumn('user_id', function ($history) {
+                return ($history->user_id != null && isset($history->providers)) ? $history->providers->display_name : '-';
+            })
+            ->editColumn('activity_type', function ($history) {
+                return $history->activity_type ? str_replace("_", " ", ucfirst($history->activity_type)) : '-';
+            })
+            ->addIndexColumn()
+            ->toJson();
     }
 
     /**
@@ -238,17 +253,17 @@ class WalletController extends Controller
      */
     public function destroy($id)
     {
-        if(demoUserPermission()){
+        if (demoUserPermission()) {
             return  redirect()->back()->withErrors(trans('messages.demo_permission_denied'));
         }
         $wallet = Wallet::find($id);
-        $msg= __('messages.msg_fail_to_delete',['item' => __('messages.wallet')] );
+        $msg = __('messages.msg_fail_to_delete', ['item' => __('messages.wallet')]);
 
-        if($wallet != '') {
+        if ($wallet != '') {
             $wallet->delete();
-            $msg= __('messages.wallet_deleted');
+            $msg = __('messages.wallet_deleted');
         }
-        return comman_custom_response(['message'=> $msg, 'status' => true]);
+        return comman_custom_response(['message' => $msg, 'status' => true]);
     }
 
     public function getWalletPaymentMethod(Request $request)
@@ -264,7 +279,7 @@ class WalletController extends Controller
             $payment_data = Payment::create($data);
         }
 
-        $sitesetup = Setting::where('type','site-setup')->where('key', 'site-setup')->first();
+        $sitesetup = Setting::where('type', 'site-setup')->where('key', 'site-setup')->first();
         $sitesetupdata = $sitesetup ? json_decode($sitesetup->value, true) : null;
         $country_id = $sitesetupdata['default_currency'] ?? null;
         $country = Country::find($country_id);
@@ -289,18 +304,17 @@ class WalletController extends Controller
         $data = $request->all();
 
         $checkout_session = addWalletAmount($data);
-        if(isset($checkout_session['message'])) {
+        if (isset($checkout_session['message'])) {
 
             return comman_custom_response($checkout_session);
-
-        }else{
+        } else {
             Payment::where('booking_id', $data['booking_id'])->update(['other_transaction_detail' => $checkout_session['id']]);
 
             return comman_custom_response($checkout_session);
-       }
-
+        }
     }
-    public function saveWalletStripePayment(Request $request, $id){
+    public function saveWalletStripePayment(Request $request, $id)
+    {
 
 
         $request->validate([
@@ -311,7 +325,7 @@ class WalletController extends Controller
 
         $wallet = Wallet::where('user_id', $user_id)->first();
 
-        if($wallet){
+        if ($wallet) {
 
             $wallet->amount += $request->amount;
             $wallet->save();
@@ -320,16 +334,14 @@ class WalletController extends Controller
 
                 'activity_type' => 'wallet_top_up',
                 'wallet' => $wallet,
-                'top_up_amount' =>$wallet->amount,
-                'transaction_type'=> $wallet->transcation_type,
-                'transaction_id'=> $wallet->transcation_id,
+                'top_up_amount' => $wallet->amount,
+                'transaction_type' => $wallet->transcation_type,
+                'transaction_id' => $wallet->transcation_id,
 
             ];
             $this->sendNotification($activity_data);
 
             return redirect('/booking-list');
-
-          }
-
-     }
+        }
+    }
 }

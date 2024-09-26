@@ -130,10 +130,15 @@
             title: "{{ __('الاسم') }}"
           },
           {
-            data: 'description',
-            name: 'description',
-            title: "{{ __('الوصف') }}"
+            data:'parent_name',
+            name:'parent_name',
+            title: "{{ __('القسم الرئيسي') }}"
           },
+          // {
+          //   data: 'description',
+          //   name: 'description',
+          //   title: "{{ __('الوصف') }}"
+          // },
           {
             data: 'is_featured',
             name: 'is_featured',

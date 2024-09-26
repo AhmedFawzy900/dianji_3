@@ -91,7 +91,7 @@
             d.filter = {
               column_status: $('#column_status').val()
             };
-            d.type = "provider";
+            d.type = "user";
           },
         },
         columns: [{
