@@ -10,6 +10,7 @@ use App\Models\Service;
 use Hash;
 use App\Models\ProviderSlotMapping;
 use App\Http\Requests\UserRequest;
+use App\Models\Group;
 use App\Models\NotificationTemplate;
 
 class SettingController extends Controller
@@ -912,11 +913,12 @@ class SettingController extends Controller
     public function PushNotification(Request $request)
     {
         $users = User::where('user_type', 'user')->get()->pluck('username', 'id');
+        $groups = Group::pluck('name', 'id');
         $providers = User::where('user_type', 'provider')->get()->pluck('username', 'id');
         $pageTitle = (__('messages.pushnotification_settings'));
         $settings = AppSetting::first();
         $settings = [];
         $services = Service::pluck('name', 'id');
-        return view('setting.push-notification-setting', compact('settings', 'pageTitle', 'services' ,'users','providers'))->render();
+        return view('setting.push-notification-setting', compact('settings', 'pageTitle', 'services' ,'users', 'groups','providers'))->render();
     }
 }

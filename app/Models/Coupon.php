@@ -25,6 +25,10 @@ class Coupon extends Model
     {
         return $this->belongsToMany(User::class,'coupon_user', 'coupon_id', 'user_id');
     }
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class,'coupon_user', 'coupon_id', 'user_id');
+    }
 
     protected static function boot(){
         parent::boot();

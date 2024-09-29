@@ -66,11 +66,11 @@
                             </div>
                             <div class="form-group col-md-4">
                                 {{ Form::label('user_id', __('حدد العملاء'), ['class' => 'form-control-label'], false) }}
-                                {{ Form::select('user_id[]', $users, $selectedUserIds, [
+                                {{ Form::select('user_id[]', $groups, $selectedGroupIds, [
                                     'class' => 'select2js form-group user',
                                     'multiple' => 'multiple',
                                     'data-placeholder' => __('حدد العملاء'),
-                                    'data-ajax--url' => route('ajax-list', ['type' => 'user']),
+                                    'data-ajax--url' => route('ajax-list', ['type' => 'groups']),
                                 ]) }}
                             </div>
                             <div class="form-group col-md-4">

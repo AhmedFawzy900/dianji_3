@@ -620,6 +620,14 @@ class HomeController extends Controller
 
                 $items = $items->get();
                 break;
+            case 'groups':
+                $items = \App\Models\Group::select('id', 'name as text');
+                    if($value != ''){
+                        $items->where('name', 'LIKE', $value . '%');
+                    }
+
+                $items = $items->get();
+                break;
             default:
                 break;
         }

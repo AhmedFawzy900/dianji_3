@@ -20,7 +20,7 @@
                             <div class="form-group col-md-12" id="type">
                                 {{ Form::label('type',trans('messages.type').' <span class="text-danger">*</span>',['class'=>'form-control-label'], false ) }}<br />
                                 <!-- {{ Form ::radio('is_type','user',['id'=>'user','class' =>'form-control','required'],($settings == 'user' ? true : false)) }} User               
-            {{ Form ::radio('is_type','provider',['id'=>'provider','class' =>'form-control','required'],($settings == 'provider' ? true : false)) }} Provider -->
+                                {{ Form ::radio('is_type','provider',['id'=>'provider','class' =>'form-control','required'],($settings == 'provider' ? true : false)) }} Provider -->
                                 <div class="form-check-inline">
                                     <label class="form-check-label">
                                         <input type="radio" id="user" class="form-check-input is_type" value="user" name="is_type" data-type="user" checked {{!empty($settings) &&  $settings->is_type == 1 ? 'checked' :''}}>{{__('messages.user')}}
@@ -37,7 +37,7 @@
                             <div class="form-group col-md-12 " id="select_users">
                                 {{ Form::label('users', __('اختر المستخدم').' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
                                 <select class="form-control select2js users" name="user_ids[]" multiple="multiple">
-                                    @foreach($users as $key => $value)
+                                    @foreach($groups as $key => $value)
                                     <option value="{{$key}}">{{$value}}</option>
                                     @endforeach
                                 </select>
@@ -45,7 +45,7 @@
                             <div class="form-group col-md-12 d-none" id="select_providers">
                                 {{ Form::label('providers', __('اختر المزود').' <span class="text-danger">*</span>', ['class' => 'form-control-label'], false) }}
                                 <select class="form-control select2js providers" name="provider_ids[]" multiple="multiple">
-                                    @foreach($providers as $key => $value)
+                                    @foreach($groups as $key => $value)
                                     <option value="{{$key}}">{{$value}}</option>
                                     @endforeach
                                 </select>

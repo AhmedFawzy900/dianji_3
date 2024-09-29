@@ -14,4 +14,10 @@ class Group extends Model
     protected $casts = [
         'user_ids' => 'array',
     ];
+
+    public function coupons()
+    {
+        return $this->belongsToMany(Coupon::class,'coupon_user', 'user_id', 'coupon_id');
+    } 
+    
 }

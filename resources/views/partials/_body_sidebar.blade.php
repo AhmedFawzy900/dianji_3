@@ -35,7 +35,7 @@ $menu->add('<span>' . __('الحجوزات') . '</span><span class="custom-toolt
 
 
 $menu->add(__('messages.sidebar_form_title', ['form' => trans('الاقسام والمناطق')]), ['class' => 'category-main'])
-->data('permission', ['category list', 'subcategory list', 'service list']);
+->data('role', ['admin', 'demo_admin']);
 
 $menu->add('<span>' . __('كل الاقسام') . '</span><span class="custom-tooltip"><span class="tooltip-text">' . __('messages.category') . '</span></span>', ['route' => 'category.index',])
 ->prepend('<svg class="mr-2" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -51,7 +51,7 @@ $menu->add('<span>' . __('كل المناطق') . '</span><span class="custom-to
     <path d="M17.8202 13.76C17.4902 13.43 17.0402 13.25 16.5802 13.25H12.9902C12.0302 13.25 11.2402 14.04 11.2402 15V20C11.2402 20.96 12.0302 21.75 12.9902 21.75H18.9902C19.9502 21.75 20.7402 20.96 20.7402 20V17.41C20.7402 16.95 20.5502 16.5 20.2302 16.17L17.8202 13.76ZM19.2502 20C19.2502 20.14 19.1402 20.25 19.0002 20.25H13.0002C12.8602 20.25 12.7502 20.14 12.7502 20V15C12.7502 14.86 12.8602 14.75 13.0002 14.75H16.5902C16.6602 14.75 16.7202 14.78 16.7702 14.82L19.1802 17.23C19.1802 17.23 19.2502 17.34 19.2502 17.41V20Z" fill="currentColor" />
     <path d="M9 7.75C9.41 7.75 9.75 7.41 9.75 7C9.75 6.59 9.41 6.25 9 6.25H4.75V3C4.75 2.59 4.41 2.25 4 2.25C3.59 2.25 3.25 2.59 3.25 3V15C3.25 16.52 4.48 17.75 6 17.75H9C9.41 17.75 9.75 17.41 9.75 17C9.75 16.59 9.41 16.25 9 16.25H6C5.31 16.25 4.75 15.69 4.75 15V7.75H9Z" fill="currentColor" />
 </svg>')
-->data('permission', '')
+->data('role', ['admin', 'demo_admin'])
 ->link->attr(['class' => '']);
 
 
@@ -633,7 +633,7 @@ $menu->add('<span>' . __('messages.setting') . '</span><span class="custom-toolt
 ->nickname('setting')
 ->data('permission', 'system setting');
 
-$menu->add('<span>' . __('اعدادات التطبيق') . '</span>', ['class' => 'category-main']);
+$menu->add('<span>' . __('اعدادات التطبيق') . '</span>', ['class' => 'category-main'])->data('role', ['admin', 'demo_admin']);
 
 $menu->add('<span>' . __('الاسلايدر') . '</span><span class="custom-tooltip"><span class="tooltip-text">' . __('messages.dashboard') . '</span></span>', ['route' => 'app.slider.index'])
 ->prepend('<svg class="mr-2" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -642,6 +642,7 @@ $menu->add('<span>' . __('الاسلايدر') . '</span><span class="custom-too
     <path d="M13.5 5.5C13.5 4.56812 13.5 4.10218 13.6522 3.73463C13.8552 3.24458 14.2446 2.85523 14.7346 2.65224C15.1022 2.5 15.5681 2.5 16.5 2.5H18.5C19.4319 2.5 19.8978 2.5 20.2654 2.65224C20.7554 2.85523 21.1448 3.24458 21.3478 3.73463C21.5 4.10218 21.5 4.56812 21.5 5.5C21.5 6.43188 21.5 6.89782 21.3478 7.26537C21.1448 7.75542 20.7554 8.14477 20.2654 8.34776C19.8978 8.5 19.4319 8.5 18.5 8.5H16.5C15.5681 8.5 15.1022 8.5 14.7346 8.34776C14.2446 8.14477 13.8552 7.75542 13.6522 7.26537C13.5 6.89782 13.5 6.43188 13.5 5.5Z" stroke="currentColor" stroke-width="1.5" />
     <path d="M2 18.5C2 19.4319 2 19.8978 2.15224 20.2654C2.35523 20.7554 2.74458 21.1448 3.23463 21.3478C3.60218 21.5 4.06812 21.5 5 21.5H7C7.93188 21.5 8.39782 21.5 8.76537 21.3478C9.25542 21.1448 9.64477 20.7554 9.84776 20.2654C10 19.8978 10 19.4319 10 18.5C10 17.5681 10 17.1022 9.84776 16.7346C9.64477 16.2446 9.25542 15.8552 8.76537 15.6522C8.39782 15.5 7.93188 15.5 7 15.5H5C4.06812 15.5 3.60218 15.5 3.23463 15.6522C2.74458 15.8552 2.35523 16.2446 2.15224 16.7346C2 17.1022 2 17.5681 2 18.5Z" stroke="currentColor" stroke-width="1.5" />
 </svg>')
+->data('role', ['admin', 'demo_admin'])
 ->link->attr(['class' => '']);
 $menu->add('<span>' . __('الفيديوهات') . '</span><span class="custom-tooltip"><span class="tooltip-text">' . __('messages.dashboard') . '</span></span>', ['route' => 'app.videos.index'])  
 ->prepend('<svg class="mr-2" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -650,6 +651,7 @@ $menu->add('<span>' . __('الفيديوهات') . '</span><span class="custom-t
     <path d="M13.5 5.5C13.5 4.56812 13.5 4.10218 13.6522 3.73463C13.8552 3.24458 14.2446 2.85523 14.7346 2.65224C15.1022 2.5 15.5681 2.5 16.5 2.5H18.5C19.4319 2.5 19.8978 2.5 20.2654 2.65224C20.7554 2.85523 21.1448 3.24458 21.3478 3.73463C21.5 4.10218 21.5 4.56812 21.5 5.5C21.5 6.43188 21.5 6.89782 21.3478 7.26537C21.1448 7.75542 20.7554 8.14477 20.2654 8.34776C19.8978 8.5 19.4319 8.5 18.5 8.5H16.5C15.5681 8.5 15.1022 8.5 14.7346 8.34776C14.2446 8.14477 13.8552 7.75542 13.6522 7.26537C13.5 6.89782 13.5 6.43188 13.5 5.5Z" stroke="currentColor" stroke-width="1.5" />
     <path d="M2 18.5C2 19.4319 2 19.8978 2.15224 20.2654C2.35523 20.7554 2.74458 21.1448 3.23463 21.3478C3.60218 21.5 4.06812 21.5 5 21.5H7C7.93188 21.5 8.39782 21.5 8.76537 21.3478C9.25542 21.1448 9.64477 20.7554 9.84776 20.2654C10 19.8978 10 19.4319 10 18.5C10 17.5681 10 17.1022 9.84776 16.7346C9.64477 16.2446 9.25542 15.8552 8.76537 15.6522C8.39782 15.5 7.93188 15.5 7 15.5H5C4.06812 15.5 3.60218 15.5 3.23463 15.6522C2.74458 15.8552 2.35523 16.2446 2.15224 16.7346C2 17.1022 2 17.5681 2 18.5Z" stroke="currentColor" stroke-width="1.5" />
 </svg>')
+->data('role', ['admin', 'demo_admin'])
 ->link->attr(['class' => '']);
 $menu->add('<span>' . __('messages.slider') . '</span><span class="custom-tooltip"><span class="tooltip-text">' . __('messages.slider') . '</span></span>', ['class' => ''])
 ->prepend('<svg class="mr-2" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

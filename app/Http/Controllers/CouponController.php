@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Coupon;
 use App\Http\Requests\CouponRequest;
+use App\Models\Group;
 use Yajra\DataTables\DataTables;
 use App\Models\Setting;
 use App\Models\User;
@@ -146,20 +147,21 @@ class CouponController extends Controller
         $id = $request->id;
         $auth_user = authSession();
         $users = User::pluck('username', 'id');
+        $groups = Group::pluck('name', 'id');
         $coupondata = Coupon::find($id);
         $pageTitle = trans('messages.update_form_title', ['form' => trans('messages.coupon')]);
 
         if ($coupondata == null) {
             $pageTitle = trans('messages.add_button_form', ['form' => trans('messages.coupon')]);
             $coupondata = new Coupon;
-            $selectedUserIds = []; // No users selected for a new coupon
+            $selectedGroupIds = []; // No users selected for a new coupon
         }else{
-            $selectedUserIds = $coupondata->users()->pluck('users.id')->toArray();
+            $selectedGroupIds = $coupondata->groups()->pluck('groups.id')->toArray();
         }
 
         
 
-        return view('coupon.create', compact('pageTitle', 'coupondata', 'auth_user', 'users', 'selectedUserIds'));
+        return view('coupon.create', compact('pageTitle', 'coupondata', 'auth_user', 'users', 'selectedGroupIds', 'groups'));
     }
 
     /**
